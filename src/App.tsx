@@ -1,15 +1,17 @@
-import { useRef, useState } from "react";
-import "./App.css";
-import Canvas from "./components/canvas/Canvas";
-import Control from "./components/control/Control";
+import { useState } from "react";
 
+import { Control, Canvas } from "./components";
+
+import "./App.css";
+
+import { TOOL } from "./types";
 function App() {
-  const [tool, setTool] = useState("cursor");
-  const stageRef = useRef(null);
+  const [tool, setTool] = useState<TOOL>(TOOL.MOVE);
+
   return (
     <>
-      <Canvas tool={tool} stageRef={stageRef} />
-      <Control tool={tool} setTool={setTool} />
+      <Canvas tool={tool} />
+      <Control tool={tool} onChangeTool={setTool} />
     </>
   );
 }

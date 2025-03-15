@@ -1,45 +1,70 @@
-import { useState } from "react";
+import { KonvaEventObject } from "konva/lib/Node";
+import { FC, useState } from "react";
 import { Layer, Stage } from "react-konva";
+import { Figure, TOOL } from "../../types";
 import Shape from "../shape/Shape";
 
-const Canvas = ({ tool, stageRef }: any) => {
-  const [figures, setFigures] = useState<any>([]);
+type Props = {
+  tool: TOOL;
+};
 
-  const handleOnClick = (e: any) => {
-    if (tool === "cursor") return;
+export const Canvas: FC<Props> = ({ tool }) => {
+  const [figures, setFigures] = useState<Figure[]>([]);
+
+  const handleOnClick = (e: KonvaEventObject<MouseEvent>) => {
+    if (tool === TOOL.MOVE) return;
+
     const stage = e.target.getStage();
-    const stageOffset = stage.absolutePosition();
+    if (!stage) return;
+
     const point = stage.getPointerPosition();
-    setFigures((prev: any) => [
+    const stageOffset = stage.absolutePosition();
+
+    if (!point) return;
+
+    setFigures((prev: Figure[]) => [
       ...prev,
       {
         id: Date.now().toString(36),
-        width: 100,
-        height: 100,
-        type: "rect",
         x: point.x - stageOffset.x,
         y: point.y - stageOffset.y,
-        html: "",
-        text: "",
+        type: "rect",
+        text: "Введите текст",
       },
     ]);
+  };
+
+  const handleAddText = (id: string) => (text: string) => {
+    setFigures((prev: Figure[]) =>
+      prev.map((figure: Figure) => {
+        if (figure.id === id) {
+          return { ...figure, text };
+        }
+        return figure;
+      })
+    );
   };
 
   return (
     <Stage
       width={window.innerWidth}
       height={window.innerHeight}
-      draggable={tool === "cursor"}
+      draggable
       onClick={handleOnClick}
-      ref={stageRef}
     >
       <Layer>
-        {figures.map((figure: any, i: number) => {
-          return <Shape key={i} {...figure} stageRef={stageRef} tool={tool} />;
-        })}
+        {figures.map((figure) => (
+          <Shape
+            id={figure.id}
+            key={figure.id}
+            x={figure.x}
+            y={figure.y}
+            tool={tool}
+            text={figure.text}
+            onSave={handleAddText(figure.id)}
+          />
+        ))}
       </Layer>
     </Stage>
   );
 };
-
-export default Canvas;

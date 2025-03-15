@@ -1,0 +1,47 @@
+ 
+
+  
+.wrapper {
+    width: 768px;
+    border: 1px solid black;
+    background: #fff;
+    padding: 1rem;
+
+    .container {
+        width: 100%;
+        border: 1px solid green;
+        padding: 1rem;
+    }
+}
+  
+
+  
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 1fr 1fr;
+
+    button {
+        margin-right: 8px;
+        font-size: 1rem;
+        padding: 10px;
+        border: none;
+        background: #fff;
+        cursor: pointer;
+      }
+}
+  
+
+.leftAlign {
+  text-align: left;
+}
+.rightAlign {
+  text-align: right;
+}
+.centerAlign {
+  text-align: center;
+}
+.justifyAlign {
+  text-align: justify;
+}
+  

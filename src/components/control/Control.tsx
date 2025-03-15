@@ -1,6 +1,16 @@
-const Control = ({ tool, setTool }: any) => {
-  const handleOnChange = (e: any) => {
-    setTool(e.target.value);
+import { FC } from "react";
+import { TOOL } from "../../types";
+
+type Props = {
+  tool: string;
+  onChangeTool: (value: TOOL) => void;
+};
+
+export const Control: FC<Props> = ({ tool, onChangeTool }) => {
+  const handleOnChange = ({
+    target: { value },
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    onChangeTool(value as TOOL);
   };
 
   return (
@@ -8,28 +18,26 @@ const Control = ({ tool, setTool }: any) => {
       <div>
         <input
           type="radio"
-          id="cursor"
-          name="control"
-          value="cursor"
-          checked={tool === "cursor"}
+          id="move"
+          name="move"
+          value="move"
+          checked={tool === "move"}
           onChange={handleOnChange}
         />
-        <label htmlFor="cursor">Взаимодействие</label>
+        <label htmlFor="move">Взаимодействие</label>
       </div>
 
       <div>
         <input
           type="radio"
-          id="shape"
+          id="draw"
           name="control"
-          value="shape"
-          checked={tool === "shape"}
+          value="draw"
+          checked={tool === "draw"}
           onChange={handleOnChange}
         />
-        <label htmlFor="shape">Добавление</label>
+        <label htmlFor="draw">Добавление</label>
       </div>
     </div>
   );
 };
-
-export default Control;
